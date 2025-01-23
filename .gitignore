@@ -1,0 +1,13 @@
+# Ignore Python bytecode
+*.pyc
+__pycache__/
+
+# Ignore virtual environments
+venv/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore data files (if any large data sets are in the repo)
+data/
+
