@@ -2,3 +2,6 @@ scikit-learn
 nltk
 numpy
 pandas
+joblib
+transformers
+matplotlib
