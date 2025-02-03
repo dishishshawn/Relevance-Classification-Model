@@ -26,14 +26,14 @@ This project focuses on classifying the relevance of text data using machine lea
 ## Usage
 
 1. Prepare your dataset and place it in the `data` directory.
-2. Run the training script:
+2. Run the script:
     ```bash
-    python train.py
+    python train_user_model.py 10.10 1 --ratios 10 90 20 80 50 50
     ```
-3. Use the trained model to make predictions:
-    ```bash
-    python predict.py --input your_input_file.txt
-    ```
+    Where 10.10 is the folder "./data/10.10" with 10 relevant and 10 irrelevant ("./data/10.10/relevant" and "./data/10.10/irrelevant")
+    and after 0 or 1 denotes whether you want synthetic data to be used during training
+    --ratios: Space seperate relevant and irrelevant ratios
+
 
 ## License
 
