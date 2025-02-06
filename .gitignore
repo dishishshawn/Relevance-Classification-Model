@@ -11,3 +11,5 @@ venv/
 # Ignore data files (if any large data sets are in the repo)
 data/
 
+# Ignore the 1.6 million row dataset
+./archive
