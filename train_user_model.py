@@ -1,3 +1,5 @@
+""" The code below sucks. It is a mess and needs to be cleaned up. But I am not going to do it """
+
 import os
 import argparse
 import numpy as np
