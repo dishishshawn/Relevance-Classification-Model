@@ -8,8 +8,15 @@ venv/
 # Ignore Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Ignore data files (if any large data sets are in the repo)
+# Ignore large folders (if any large data sets are in the repo)
 data/
+D:\Relevance Classification\bag of words
+archive/
+manual_model/
+sequential/
+bert/
 
 # Ignore the CSV dataset
 *.csv
+# Ignore large CSV files
+archive/training.1600000.processed.noemoticon.csv
