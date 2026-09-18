@@ -1,7 +1,11 @@
-scikit-learn
+# TensorFlow 2.15 keeps Keras 2, which TFBertForSequenceClassification and the
+# Keras Tokenizer need. Needs Python 3.9-3.11.
+tensorflow==2.15.*
+tf-keras==2.15.*  # transformers switches tf.keras to this package
+transformers>=4.36,<4.47
+modAL-python
+scikit-learn<1.6  # modAL uses an argument removed in 1.8
 nltk
-numpy
+numpy<2
 pandas
 joblib
-transformers
-matplotlib

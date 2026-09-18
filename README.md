@@ -4,6 +4,8 @@ This project is for my First Year Research Experience at the University of Oklah
 
 The goal is to create a "search engine" for social media posts. To do this I created an algorithm based upon active feedback through uncertainty sampling. 
 
+Want to run it? Jump to [Quickstart](#quickstart).
+
 ## Poster
 
 Presented at the University of Oklahoma First-Year Research Experience (FYRE). Click for full resolution.
@@ -51,17 +53,51 @@ With 100 actively chosen labels, every model matched or beat the same model trai
 
 Combining a model's ability to process millions of tweets with human insight into nuance produces a more accurate classifier for ambiguous domains such as healthcare, education, customer service, legal, social media, and news.
 
-## Code
+## Quickstart
+
+Requires Python 3.11 (TensorFlow 2.15 doesn't support newer versions). A GPU is optional; everything runs on CPU.
+
+```bash
+git clone https://github.com/dishishshawn/Relevance-Classification-Model.git
+cd Relevance-Classification-Model
+uv venv -p 3.11 && source .venv/bin/activate   # or: python3.11 -m venv .venv
+uv pip install -r requirements.txt             # or: pip install -r requirements.txt
+```
+
+Then run the pipeline in order. Everything is written to `data/` (git-ignored), and the first command downloads Sentiment140 (~80 MB) for you.
+
+```bash
+# 1. Label tweets by keyword: a tweet is "relevant" if it mentions the topic
+python prepare_data.py test football     # held-out test set -> data/test
+python prepare_data.py train football    # balanced sets of 25, 50, ... per class -> data/25.25, data/50.50, ...
+
+# 2. Baseline without feedback: accuracy vs. training-set size
+python baseline.py                       # -> results/baseline_sweep.csv
+
+# 3. Active feedback: each script shows you tweets and asks "Relevant? (y/n/stop)"
+python active_bow.py                     # bag of words + uncertainty sampling
+python active_lstm.py                    # LSTM
+python active_bert.py                    # AL-BERT (downloads bert-base-uncased, ~440 MB)
+
+# 4. Compare the feedback-trained models on the test set
+python evaluate.py                       # -> results/model_comparison.csv
+```
+
+Every script takes `--help`. The feedback scripts save their progress to `data/feedback_*/`, so you can type `stop` and resume later. Any keyword works in place of `football`, and you can pass several (`python prepare_data.py test football soccer nfl`).
+
+## Repository Layout
 
 | File | Purpose |
 | --- | --- |
-| `download_and_filter.py`, `load_data.py`, `preprocess.py` | Load and preprocess Sentiment140 |
-| `create_test_set.py` | Build the held-out test set |
-| `bag of words/` | Bag-of-words baseline training and evaluation |
-| `train_bag_of_words_feedback.py` | Bag-of-words model with the active feedback loop |
-| `train_sequential_feedback.py` | Sequential (Keras) model with the feedback loop |
-| `train_bert_feedback.py` | AL-BERT |
-| `test_active_feedback_models.py` | Evaluate the feedback-trained models |
+| `common.py` | Paths, Sentiment140 download and loading, text cleaning (URLs, punctuation, stopwords) |
+| `prepare_data.py` | Builds the keyword-labeled training sets and test set |
+| `baseline.py` | TF-IDF + logistic regression trained on each set size, scored on the test set |
+| `active_bow.py` | Bag of words with modAL uncertainty sampling |
+| `active_lstm.py` | Keras LSTM with a relevance feedback loop |
+| `active_bert.py` | AL-BERT: fine-tuned `bert-base-uncased`, scoring each tweet by uncertainty + relevance |
+| `evaluate.py` | Scores every trained feedback model on `data/test` |
+| `results/baseline_sweep.csv` | Baseline results from the original research run |
+| `poster/` | FYRE poster |
 
 ## Acknowledgements
 
